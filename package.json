@@ -1,0 +1,42 @@
+{
+  "name": "enable-drag-and-drop",
+  "version": "1.0.0",
+  "description": "enable element drag and drop",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/draggable.umd.js",
+  "module": "./dist/draggable.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/draggable.es.js",
+      "require": "./dist/draggable.umd.js"
+    }
+  },
+  "type": "module",
+  "types": "./dist/draggable.d.ts",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/junqiuzhang/draggable.git"
+  },
+  "author": "junqiuzhang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/junqiuzhang/draggable/issues"
+  },
+  "homepage": "https://github.com/junqiuzhang/draggable#readme",
+  "keywords": [
+    "draggable",
+    "javascript"
+  ],
+  "devDependencies": {
+    "typescript": "^4.3.2",
+    "vite": "^2.3.7",
+    "vite-plugin-react": "^4.0.1"
+  }
+}

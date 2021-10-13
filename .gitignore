@@ -1,0 +1,51 @@
+### OSX ###
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+### Windows ###
+Thumbs.db
+ehthumbs.db
+
+### SublimeText ###
+*.sublime-workspace
+/.idea/
+
+### VSCode ###
+.vscode
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# App specific
+node_modules/
+.tmp
+
+#npm#
+npm-debug.log
+
+#yarn#
+yarn-error.log
+
+#.task#
+*.task
+
+#static-site#
+static-site/
+
+#lib#
+/lib/
+
+#dist#
+/dist/

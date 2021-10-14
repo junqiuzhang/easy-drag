@@ -29,13 +29,15 @@ npm install --save easy-drag
 ## Usage
 
 ```ts
-new EasyDrag(document.querySelector(".draggable"));
+import enableDrag from 'easy-drag';
+enableDrag(document.querySelector(".draggable"));
 ```
 
 Or
 
 ```ts
-new EasyDrag(document.querySelector(".draggable"), {
+import enableDrag from 'easy-drag';
+enableDrag(document.querySelector(".draggable"), {
   outerElement: document.body,
   innerElement: document.querySelector(".drag-icon"),
   onDragStart: () => {},
@@ -46,8 +48,8 @@ new EasyDrag(document.querySelector(".draggable"), {
 
 Description:
 
-- outerElement: drag range
-- innerElement: drag icon
+- outerElement: drag range element
+- innerElement: drag icon element
 - onDragStart: start callback
 - onDrag: start callback
 - onDragEnd: end callback

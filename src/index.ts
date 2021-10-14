@@ -1,14 +1,15 @@
 import {
   TVector,
+  TVectorRange,
   addVector,
   diffVector,
   formatVector,
   setTranslatePosition,
 } from "./utils";
 interface IOptions {
-  /** 拖拽范围 */
+  /** 拖拽范围元素 */
   outerElement?: HTMLElement;
-  /** 监听拖拽事件的元素 */
+  /** 拖拽图标元素 */
   innerElement?: HTMLElement;
   /** 拖拽开始的回调 */
   onDragStart: () => void;
@@ -21,81 +22,78 @@ interface IOptions {
  * 用transform属性轻松实现拖拽效果
  * 可设置拖拽范围、拖拽移动的元素、监听拖拽事件的元素
  */
-class EasyDrag {
-  outerElement: HTMLElement;
-  element: HTMLElement;
-  innerElement: HTMLElement;
-  startPosition: TVector | null;
-  startVectorRange: number[];
-  startTransform: string;
-  onDragStart: () => void;
-  onDrag: (v: TVector) => void;
-  onDragEnd: () => void;
-  constructor(element: HTMLElement, options?: IOptions) {
-    const { outerElement, innerElement, onDragStart, onDrag, onDragEnd } =
-      options ?? {};
-    this.outerElement = outerElement ?? document.body;
-    this.element = element;
-    this.innerElement = innerElement ?? element;
-    this.startPosition = null;
-    this.startVectorRange = [];
-    this.startTransform = "";
-    this.onDragStart = onDragStart ?? (() => {});
-    this.onDrag = onDrag ?? (() => {});
-    this.onDragEnd = onDragEnd ?? (() => {});
+const enableDrag = (element: HTMLElement, options?: IOptions) => {
+  let { outerElement, innerElement, onDragStart, onDrag, onDragEnd } =
+    options ?? {};
+  // 拖拽开始时的鼠标位置
+  let startPosition: TVector | null = null;
+  // 拖拽开始时的鼠标移动范围
+  let startVectorRange: TVectorRange | null = null;
+  // 拖拽开始时的元素位移
+  let startTransform = "";
+  // 拖拽范围元素
+  outerElement = outerElement ?? document.body;
+  // 拖拽的元素
+  element = element;
+  // 拖拽图标元素
+  innerElement = innerElement ?? element;
 
-    this.addEventListener();
-  }
-  translate = (v: TVector) => {
-    this.element.style.transform = setTranslatePosition(this.startTransform, v);
+  const translate = (v: TVector) => {
+    element.style.transform = setTranslatePosition(startTransform, v);
   };
-  onMouseDown = (e: MouseEvent) => {
+  const onMouseDown = (e: MouseEvent) => {
     e.stopPropagation();
     // 记录当前鼠标位置
-    this.startPosition = [e.pageX, e.pageY];
+    startPosition = [e.pageX, e.pageY];
 
-    if (this.outerElement && this.element) {
+    if (outerElement && element && innerElement) {
       // 记录可拖拽范围
-      const outerElementRect = this.outerElement.getBoundingClientRect();
-      const elementRect = this.element.getBoundingClientRect();
-      this.startVectorRange = [
+      const outerElementRect = outerElement.getBoundingClientRect();
+      const elementRect = element.getBoundingClientRect();
+      startVectorRange = [
         outerElementRect.top - elementRect.top,
         outerElementRect.bottom - elementRect.bottom,
         outerElementRect.left - elementRect.left,
         outerElementRect.right - elementRect.right,
       ];
       // 记录当前元素transform
-      this.startTransform = window.getComputedStyle(this.element).transform;
+      startTransform = window.getComputedStyle(element).transform;
     }
-    this.onDragStart();
+    typeof onDragStart === "function" && onDragStart();
   };
-  onMouseMove = (e: MouseEvent) => {
-    if (this.startPosition) {
+  const onMouseMove = (e: MouseEvent) => {
+    if (startPosition && startVectorRange) {
       // 当前鼠标位置
       const currentPosition: TVector = [e.pageX, e.pageY];
       // 位移向量
-      const moveVector = diffVector(this.startPosition, currentPosition);
+      const moveVector = diffVector(startPosition, currentPosition);
       // 可移动范围内的位移向量
-      const formattedVector = formatVector(moveVector, this.startVectorRange);
-      this.translate(formattedVector);
-      this.onDrag(formattedVector);
+      const formattedVector = formatVector(moveVector, startVectorRange);
+      translate(formattedVector);
+      typeof onDrag === "function" && onDrag(formattedVector);
     }
   };
-  onMouseUp = (e: MouseEvent) => {
-    if (this.startPosition) {
-      this.onDragEnd();
+  const onMouseUp = (e: MouseEvent) => {
+    if (startPosition && startVectorRange) {
+      typeof onDragEnd === "function" && onDragEnd();
     }
-    this.startPosition = null;
+    startPosition = null;
   };
-  addEventListener() {
-    this.innerElement.addEventListener("mousedown", this.onMouseDown);
-    document.addEventListener("mousemove", this.onMouseMove);
-    document.addEventListener("mouseup", this.onMouseUp);
-  }
-  removeEventListener() {
-    this.innerElement.removeEventListener("mousedown", this.onMouseDown);
-    document.removeEventListener("mousemove", this.onMouseMove);
-    document.removeEventListener("mouseup", this.onMouseUp);
-  }
-}
-export default EasyDrag;
+  const addEventListener = () => {
+    if (innerElement) {
+      innerElement.addEventListener("mousedown", onMouseDown);
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp);
+    }
+  };
+  const removeEventListener = () => {
+    if (innerElement) {
+      innerElement.removeEventListener("mousedown", onMouseDown);
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+    }
+  };
+  addEventListener();
+  return removeEventListener;
+};
+export default enableDrag;

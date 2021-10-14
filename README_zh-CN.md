@@ -27,13 +27,15 @@ npm install --save easy-drag
 ## 使用
 
 ```ts
-new EasyDrag(document.querySelector(".draggable"));
+import enableDrag from 'easy-drag';
+enableDrag(document.querySelector(".draggable"));
 ```
 
 或
 
 ```ts
-new EasyDrag(document.querySelector(".draggable"), {
+import enableDrag from 'easy-drag';
+enableDrag(document.querySelector(".draggable"), {
   outerElement: document.body,
   innerElement: document.querySelector(".drag-icon"),
   onDragStart: () => {},
@@ -44,8 +46,8 @@ new EasyDrag(document.querySelector(".draggable"), {
 
 说明：
 
-- outerElement: 拖拽范围
-- innerElement: 拖拽图标
+- outerElement: 拖拽范围元素
+- innerElement: 拖拽图标元素
 - onDragStart: 拖拽开始的回调
 - onDrag: 拖拽中的回调
 - onDragEnd: 拖拽结束的回调

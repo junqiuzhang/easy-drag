@@ -3,6 +3,10 @@
  */
 export type TVector = [number, number];
 /**
+ * 向量范围
+ */
+export type TVectorRange = [number, number, number, number];
+/**
  * 向量加法
  * @param vector1 向量1
  * @param vector2 向量2

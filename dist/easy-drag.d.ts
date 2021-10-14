@@ -1,15 +1,14 @@
-export declare type TVector = [number, number];
-interface IProps {
+declare type TVector = [number, number];
+interface IOptions {
     /** 拖拽范围 */
     outerElement?: HTMLElement;
-    /** 拖拽移动的元素 */
-    element: HTMLElement;
     /** 监听拖拽事件的元素 */
     innerElement?: HTMLElement;
-}
-interface IAddEventListenerParam {
+    /** 拖拽开始的回调 */
     onDragStart: () => void;
+    /** 拖拽中的回调 */
     onDrag: (v: TVector) => void;
+    /** 拖拽结束的回调 */
     onDragEnd: () => void;
 }
 /**
@@ -17,7 +16,6 @@ interface IAddEventListenerParam {
  * 可设置拖拽范围、拖拽移动的元素、监听拖拽事件的元素
  */
 declare class EasyDrag {
-    constructor({ outerElement, element, innerElement }: IProps);
     outerElement: HTMLElement;
     element: HTMLElement;
     innerElement: HTMLElement;
@@ -27,11 +25,12 @@ declare class EasyDrag {
     onDragStart: () => void;
     onDrag: (v: TVector) => void;
     onDragEnd: () => void;
+    constructor(element: HTMLElement, options?: IOptions);
     translate: (v: TVector) => void;
     onMouseDown: (e: MouseEvent) => void;
     onMouseMove: (e: MouseEvent) => void;
     onMouseUp: (e: MouseEvent) => void;
-    addEventListener(listeners?: IAddEventListenerParam): void;
+    addEventListener(): void;
     removeEventListener(): void;
 }
 export default EasyDrag;

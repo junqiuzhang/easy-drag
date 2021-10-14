@@ -31,11 +31,11 @@ const getTranslatePosition = (transform) => {
 const setTranslatePosition = (transform, vector) => {
   const translatePosition = getTranslatePosition(transform);
   const currentTranslatePosition = addVector(translatePosition, vector);
-  const tempTransform = transform.replace(TranslateRegExp, "");
+  const tempTransform = transform.replace(TranslateRegExp, "").replace("none", "");
   return `translate(${currentTranslatePosition[0]}px, ${currentTranslatePosition[1]}px) ${tempTransform}`;
 };
 class EasyDrag {
-  constructor({ outerElement, element, innerElement }) {
+  constructor(element, options) {
     this.translate = (v) => {
       this.element.style.transform = setTranslatePosition(this.startTransform, v);
     };
@@ -70,27 +70,22 @@ class EasyDrag {
       }
       this.startPosition = null;
     };
+    const { outerElement, innerElement, onDragStart, onDrag, onDragEnd } = options != null ? options : {};
     this.outerElement = outerElement != null ? outerElement : document.body;
     this.element = element;
     this.innerElement = innerElement != null ? innerElement : element;
     this.startPosition = null;
-    this.startTransform = "";
     this.startVectorRange = [];
-    this.onDragStart = () => {
+    this.startTransform = "";
+    this.onDragStart = onDragStart != null ? onDragStart : () => {
     };
-    this.onDrag = () => {
+    this.onDrag = onDrag != null ? onDrag : () => {
     };
-    this.onDragEnd = () => {
+    this.onDragEnd = onDragEnd != null ? onDragEnd : () => {
     };
+    this.addEventListener();
   }
-  addEventListener(listeners) {
-    const { onDragStart, onDrag, onDragEnd } = listeners != null ? listeners : {};
-    if (onDragStart)
-      this.onDragStart = onDragStart;
-    if (onDrag)
-      this.onDrag = onDrag;
-    if (onDragEnd)
-      this.onDragEnd = onDragEnd;
+  addEventListener() {
     this.innerElement.addEventListener("mousedown", this.onMouseDown);
     document.addEventListener("mousemove", this.onMouseMove);
     document.addEventListener("mouseup", this.onMouseUp);

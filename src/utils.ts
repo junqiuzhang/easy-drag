@@ -70,6 +70,8 @@ export const setTranslatePosition = (
 ): string => {
   const translatePosition = getTranslatePosition(transform);
   const currentTranslatePosition = addVector(translatePosition, vector);
-  const tempTransform = transform.replace(TranslateRegExp, "");
+  const tempTransform = transform
+    .replace(TranslateRegExp, "")
+    .replace("none", "");
   return `translate(${currentTranslatePosition[0]}px, ${currentTranslatePosition[1]}px) ${tempTransform}`;
 };

@@ -29,7 +29,5 @@ npm install --save easy-drag
 ## Usage
 
 ```ts
-new EasyDrag({
-  element: document.querySelector(".draggable"),
-}).addEventListener();
+new EasyDrag(document.querySelector(".draggable"));
 ```

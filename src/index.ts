@@ -5,17 +5,16 @@ import {
   formatVector,
   setTranslatePosition,
 } from "./utils";
-interface IProps {
+interface IOptions {
   /** 拖拽范围 */
   outerElement?: HTMLElement;
-  /** 拖拽移动的元素 */
-  element: HTMLElement;
   /** 监听拖拽事件的元素 */
   innerElement?: HTMLElement;
-}
-interface IAddEventListenerParam {
+  /** 拖拽开始的回调 */
   onDragStart: () => void;
+  /** 拖拽中的回调 */
   onDrag: (v: TVector) => void;
+  /** 拖拽结束的回调 */
   onDragEnd: () => void;
 }
 /**
@@ -23,17 +22,6 @@ interface IAddEventListenerParam {
  * 可设置拖拽范围、拖拽移动的元素、监听拖拽事件的元素
  */
 class EasyDrag {
-  constructor({ outerElement, element, innerElement }: IProps) {
-    this.outerElement = outerElement ?? document.body;
-    this.element = element;
-    this.innerElement = innerElement ?? element;
-    this.startPosition = null;
-    this.startTransform = "";
-    this.startVectorRange = [];
-    this.onDragStart = () => {};
-    this.onDrag = () => {};
-    this.onDragEnd = () => {};
-  }
   outerElement: HTMLElement;
   element: HTMLElement;
   innerElement: HTMLElement;
@@ -43,6 +31,21 @@ class EasyDrag {
   onDragStart: () => void;
   onDrag: (v: TVector) => void;
   onDragEnd: () => void;
+  constructor(element: HTMLElement, options?: IOptions) {
+    const { outerElement, innerElement, onDragStart, onDrag, onDragEnd } =
+      options ?? {};
+    this.outerElement = outerElement ?? document.body;
+    this.element = element;
+    this.innerElement = innerElement ?? element;
+    this.startPosition = null;
+    this.startVectorRange = [];
+    this.startTransform = "";
+    this.onDragStart = onDragStart ?? (() => {});
+    this.onDrag = onDrag ?? (() => {});
+    this.onDragEnd = onDragEnd ?? (() => {});
+
+    this.addEventListener();
+  }
   translate = (v: TVector) => {
     this.element.style.transform = setTranslatePosition(this.startTransform, v);
   };
@@ -50,6 +53,7 @@ class EasyDrag {
     e.stopPropagation();
     // 记录当前鼠标位置
     this.startPosition = [e.pageX, e.pageY];
+
     if (this.outerElement && this.element) {
       // 记录可拖拽范围
       const outerElementRect = this.outerElement.getBoundingClientRect();
@@ -83,11 +87,7 @@ class EasyDrag {
     }
     this.startPosition = null;
   };
-  addEventListener(listeners?: IAddEventListenerParam) {
-    const { onDragStart, onDrag, onDragEnd } = listeners ?? {};
-    if (onDragStart) this.onDragStart = onDragStart;
-    if (onDrag) this.onDrag = onDrag;
-    if (onDragEnd) this.onDragEnd = onDragEnd;
+  addEventListener() {
     this.innerElement.addEventListener("mousedown", this.onMouseDown);
     document.addEventListener("mousemove", this.onMouseMove);
     document.addEventListener("mouseup", this.onMouseUp);

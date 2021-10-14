@@ -43,9 +43,3 @@ yarn-error.log
 
 #static-site#
 static-site/
-
-#lib#
-/lib/
-
-#dist#
-/dist/

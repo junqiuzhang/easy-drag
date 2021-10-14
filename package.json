@@ -1,20 +1,20 @@
 {
-  "name": "enable-drag-and-drop",
+  "name": "easy-drag",
   "version": "1.0.0",
-  "description": "enable element drag and drop",
+  "description": "easy drag",
   "files": [
     "dist"
   ],
-  "main": "./dist/draggable.umd.js",
-  "module": "./dist/draggable.es.js",
+  "main": "./dist/easy-drag.umd.js",
+  "module": "./dist/easy-drag.es.js",
   "exports": {
     ".": {
-      "import": "./dist/draggable.es.js",
-      "require": "./dist/draggable.umd.js"
+      "import": "./dist/easy-drag.es.js",
+      "require": "./dist/easy-drag.umd.js"
     }
   },
   "type": "module",
-  "types": "./dist/draggable.d.ts",
+  "types": "./dist/easy-drag.d.ts",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -22,21 +22,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/junqiuzhang/draggable.git"
+    "url": "git+https://github.com/junqiuzhang/easy-drag.git"
   },
   "author": "junqiuzhang",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/junqiuzhang/draggable/issues"
+    "url": "https://github.com/junqiuzhang/easy-drag/issues"
   },
-  "homepage": "https://github.com/junqiuzhang/draggable#readme",
+  "homepage": "https://github.com/junqiuzhang/easy-drag#readme",
   "keywords": [
-    "draggable",
+    "easy-drag",
+    "drag",
+    "drop",
     "javascript"
   ],
   "devDependencies": {
     "typescript": "^4.3.2",
-    "vite": "^2.3.7",
-    "vite-plugin-react": "^4.0.1"
+    "vite": "^2.3.7"
   }
 }

@@ -30,20 +30,26 @@ npm install --save easy-drag
 
 ```ts
 import enableDrag from 'easy-drag';
-enableDrag(document.querySelector(".draggable"));
+const disableDrag = enableDrag(document.querySelector(".draggable"));
+if ('what to disable drag') {
+  disableDrag();
+}
 ```
 
 Or
 
 ```ts
 import enableDrag from 'easy-drag';
-enableDrag(document.querySelector(".draggable"), {
+const disableDrag = enableDrag(document.querySelector(".draggable"), {
   outerElement: document.body,
   innerElement: document.querySelector(".drag-icon"),
   onDragStart: () => {},
   onDrag: () => {},
   onDragEnd: () => {},
 });
+if ('what to disable drag') {
+  disableDrag();
+}
 ```
 
 Description:

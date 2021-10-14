@@ -49,3 +49,7 @@ new EasyDrag(document.querySelector(".draggable"), {
 - onDragStart: 拖拽开始的回调
 - onDrag: 拖拽中的回调
 - onDragEnd: 拖拽结束的回调
+
+## 开源协议
+
+MIT

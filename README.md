@@ -51,3 +51,7 @@ Description:
 - onDragStart: start callback
 - onDrag: start callback
 - onDragEnd: end callback
+
+## License
+
+MIT

@@ -1,8 +1,3 @@
-const addVector = (vector1, vector2) => {
-  const x = vector1[0] + vector2[0];
-  const y = vector1[1] + vector2[1];
-  return [x, y];
-};
 const diffVector = (vector1, vector2) => {
   const x = vector2[0] - vector1[0];
   const y = vector2[1] - vector1[1];
@@ -17,22 +12,8 @@ const formatVector = (vector, range) => {
   y = Math.min(y, range[1]);
   return [x, y];
 };
-const TranslateRegExp = /translate\((\d+)px,\s*(\d+)px\)/;
-const getTranslatePosition = (transform) => {
-  const matchObj = transform.match(TranslateRegExp);
-  let x = 0;
-  let y = 0;
-  if (matchObj) {
-    x = Number(matchObj[1]);
-    y = Number(matchObj[2]);
-  }
-  return [x, y];
-};
 const setTranslatePosition = (transform, vector) => {
-  const translatePosition = getTranslatePosition(transform);
-  const currentTranslatePosition = addVector(translatePosition, vector);
-  const tempTransform = transform.replace(TranslateRegExp, "").replace("none", "");
-  return `translate(${currentTranslatePosition[0]}px, ${currentTranslatePosition[1]}px) ${tempTransform}`;
+  return `translate3d(${vector[0]}px, ${vector[1]}px, 0px) ${transform.replace("none", "")}`;
 };
 const enableDrag = (element, options) => {
   let { outerElement, innerElement, onDragStart, onDrag, onDragEnd } = options != null ? options : {};

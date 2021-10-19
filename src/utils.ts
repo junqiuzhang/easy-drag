@@ -44,25 +44,6 @@ export const formatVector = (vector: TVector, range: number[]): TVector => {
   return [x, y];
 };
 /**
- * translate正则
- */
-export const TranslateRegExp = /translate\((\d+)px,\s*(\d+)px\)/;
-/**
- * 从transform属性获取向量
- * @param transform transform属性值
- * @returns 向量
- */
-export const getTranslatePosition = (transform: string): TVector => {
-  const matchObj = transform.match(TranslateRegExp);
-  let x = 0;
-  let y = 0;
-  if (matchObj) {
-    x = Number(matchObj[1]);
-    y = Number(matchObj[2]);
-  }
-  return [x, y];
-};
-/**
  * 从旧transform属性和偏移向量获取新transform属性
  * @param transform 旧transform属性
  * @param vector 偏移向量
@@ -72,10 +53,8 @@ export const setTranslatePosition = (
   transform: string,
   vector: TVector
 ): string => {
-  const translatePosition = getTranslatePosition(transform);
-  const currentTranslatePosition = addVector(translatePosition, vector);
-  const tempTransform = transform
-    .replace(TranslateRegExp, "")
-    .replace("none", "");
-  return `translate(${currentTranslatePosition[0]}px, ${currentTranslatePosition[1]}px) ${tempTransform}`;
+  return `translate3d(${vector[0]}px, ${vector[1]}px, 0px) ${transform.replace(
+    "none",
+    ""
+  )}`;
 };

@@ -56,7 +56,7 @@ const enableDrag = (element: HTMLElement, options?: IOptions) => {
         outerElementRect.left - elementRect.left,
         outerElementRect.right - elementRect.right,
       ];
-      // 记录当前元素transform
+      // 记录当前元素transform，getComputedStyle返回值为matrix3d形式
       startTransform = window.getComputedStyle(element).transform;
     }
     typeof onDragStart === "function" && onDragStart();

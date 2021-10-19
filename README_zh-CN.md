@@ -51,8 +51,8 @@ if ('what to disable drag') {
 
 说明：
 
-- outerElement: 拖拽范围元素
-- innerElement: 拖拽图标元素
+- outerElement: 拖拽范围元素, 默认为`document.body`
+- innerElement: 拖拽图标元素，适用场景：弹窗需要设置为可拖拽的，但只能拖拽标题区域
 - onDragStart: 拖拽开始的回调
 - onDrag: 拖拽中的回调
 - onDragEnd: 拖拽结束的回调

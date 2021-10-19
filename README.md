@@ -54,8 +54,8 @@ if ('what to disable drag') {
 
 Description:
 
-- outerElement: drag range element
-- innerElement: drag icon element
+- outerElement: drag range element, default document.body
+- innerElement: drag icon element, application scenario: Pop-ups need to be draggable, but only the title area can be dragged
 - onDragStart: start callback
 - onDrag: start callback
 - onDragEnd: end callback

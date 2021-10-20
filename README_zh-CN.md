@@ -41,9 +41,9 @@ import enableDrag from "easy-drag";
 const disableDrag = enableDrag(document.querySelector(".draggable"), {
   outerElement: document.body,
   innerElement: document.querySelector(".drag-icon"),
-  onDragStart: () => {},
-  onDrag: () => {},
-  onDragEnd: () => {},
+  onDragStart: (v) => {},
+  onDrag: (v) => {},
+  onDragEnd: (v) => {},
 });
 if ("what to disable drag") {
   disableDrag();
@@ -54,9 +54,9 @@ if ("what to disable drag") {
 
 - outerElement: 控制拖拽范围的元素, 默认为`document.body`
 - innerElement: 拖拽图标，例如：拖拽图标移动弹窗
-- onDragStart: 拖拽开始的回调
-- onDrag: 拖拽中的回调
-- onDragEnd: 拖拽结束的回调
+- onDragStart: 拖拽开始的回调，参数 v 为元素拖拽位移向量（相对于初始位置）
+- onDrag: 拖拽中的回调，参数 v 为元素拖拽位移向量（相对于初始位置）
+- onDragEnd: 拖拽结束的回调，参数 v 为元素拖拽位移向量（相对于初始位置）
 
 ### 接口声明
 
@@ -68,11 +68,11 @@ interface IOptions {
   /** 拖拽图标 */
   innerElement?: HTMLElement;
   /** 拖拽开始的回调 */
-  onDragStart?: () => void;
+  onDragStart?: (v: TVector) => void;
   /** 拖拽中的回调 */
   onDrag?: (v: TVector) => void;
   /** 拖拽结束的回调 */
-  onDragEnd?: () => void;
+  onDragEnd?: (v: TVector) => void;
 }
 /**
  * 用transform属性轻松实现拖拽效果

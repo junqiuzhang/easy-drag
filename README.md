@@ -56,9 +56,9 @@ Description:
 
 - outerElement: drag range element, default document.body
 - innerElement: drag icon element, application scenario: Pop-ups need to be draggable, but only the title area can be dragged
-- onDragStart: callback on drag start
-- onDrag: callback in dragging
-- onDragEnd: callback on drag end
+- onDragStart: callback on drag start, parameter v is element drag translate vector (relative to initial position)
+- onDrag: callback in dragging, parameter v is element drag translate vector (relative to initial position)
+- onDragEnd: callback on drag end, parameter v is element drag translate vector (relative to initial position)
 
 ### 接口声明
 
@@ -70,11 +70,11 @@ interface IOptions {
   /** element that to drag */
   innerElement?: HTMLElement;
   /** callback on drag start */
-  onDragStart?: () => void;
+  onDragStart?: (v: TVector) => void;
   /** callback in dragging */
   onDrag?: (v: TVector) => void;
   /** callback on drag end */
-  onDragEnd?: () => void;
+  onDragEnd?: (v: TVector) => void;
 }
 /**
  * use transform easy to realize drag effect

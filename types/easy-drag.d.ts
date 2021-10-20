@@ -8,11 +8,11 @@ interface IOptions {
     /** 拖拽图标元素 */
     innerElement?: HTMLElement;
     /** 拖拽开始的回调 */
-    onDragStart?: () => void;
+    onDragStart?: (v: TVector) => void;
     /** 拖拽中的回调 */
     onDrag?: (v: TVector) => void;
     /** 拖拽结束的回调 */
-    onDragEnd?: () => void;
+    onDragEnd?: (v: TVector) => void;
 }
 /**
  * 用transform属性轻松实现拖拽效果

@@ -1,19 +1,19 @@
-const diffVector = (vector1, vector2) => {
-  const x = vector2[0] - vector1[0];
-  const y = vector2[1] - vector1[1];
+var diffVector = function(vector1, vector2) {
+  var x = vector2[0] - vector1[0];
+  var y = vector2[1] - vector1[1];
   return [x, y];
 };
-const formatVector = (vector, range) => {
-  let x = vector[0];
-  let y = vector[1];
+var formatVector = function(vector, range) {
+  var x = vector[0];
+  var y = vector[1];
   x = Math.max(x, range[2]);
   x = Math.min(x, range[3]);
   y = Math.max(y, range[0]);
   y = Math.min(y, range[1]);
   return [x, y];
 };
-const setTranslatePosition = (transform, vector) => {
-  return `translate3d(${vector[0]}px, ${vector[1]}px, 0px) ${transform.replace("none", "")}`;
+var setTranslatePosition = function(transform, vector) {
+  return "translate3d(" + vector[0] + "px, " + vector[1] + "px, 0px) " + transform.replace("none", "");
 };
 const enableDrag = (element, options) => {
   let { outerElement, innerElement, onDragStart, onDrag, onDragEnd } = options != null ? options : {};

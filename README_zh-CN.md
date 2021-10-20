@@ -27,9 +27,9 @@ npm install --save easy-drag
 ## 使用
 
 ```ts
-import enableDrag from 'easy-drag';
+import enableDrag from "easy-drag";
 const disableDrag = enableDrag(document.querySelector(".draggable"));
-if ('what to disable drag') {
+if ("what to disable drag") {
   disableDrag();
 }
 ```
@@ -37,7 +37,7 @@ if ('what to disable drag') {
 或
 
 ```ts
-import enableDrag from 'easy-drag';
+import enableDrag from "easy-drag";
 const disableDrag = enableDrag(document.querySelector(".draggable"), {
   outerElement: document.body,
   innerElement: document.querySelector(".drag-icon"),
@@ -45,17 +45,44 @@ const disableDrag = enableDrag(document.querySelector(".draggable"), {
   onDrag: () => {},
   onDragEnd: () => {},
 });
-if ('what to disable drag') {
+if ("what to disable drag") {
   disableDrag();
 }
+```
 
 说明：
 
-- outerElement: 拖拽范围元素, 默认为`document.body`
-- innerElement: 拖拽图标元素，适用场景：弹窗需要设置为可拖拽的，但只能拖拽标题区域
+- outerElement: 控制拖拽范围的元素, 默认为`document.body`
+- innerElement: 拖拽图标，例如：拖拽图标移动弹窗
 - onDragStart: 拖拽开始的回调
 - onDrag: 拖拽中的回调
 - onDragEnd: 拖拽结束的回调
+
+### 接口声明
+
+```ts
+import { TVector } from "./utils";
+interface IOptions {
+  /** 控制拖拽范围的元素 */
+  outerElement?: HTMLElement;
+  /** 拖拽图标 */
+  innerElement?: HTMLElement;
+  /** 拖拽开始的回调 */
+  onDragStart?: () => void;
+  /** 拖拽中的回调 */
+  onDrag?: (v: TVector) => void;
+  /** 拖拽结束的回调 */
+  onDragEnd?: () => void;
+}
+/**
+ * 用transform属性轻松实现拖拽效果
+ */
+declare const enableDrag: (
+  element: HTMLElement,
+  options?: IOptions | undefined
+) => () => void;
+export default enableDrag;
+```
 
 ## 开源协议
 

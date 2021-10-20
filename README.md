@@ -2,7 +2,7 @@
 
 [中文文档](https://github.com/junqiuzhang/easy-drag/blob/master/README_zh-CN.md)
 
-Easy to realize drag and drop effect
+Easy to realize drag effect
 
 ## Principle
 
@@ -29,9 +29,9 @@ npm install --save easy-drag
 ## Usage
 
 ```ts
-import enableDrag from 'easy-drag';
+import enableDrag from "easy-drag";
 const disableDrag = enableDrag(document.querySelector(".draggable"));
-if ('what to disable drag') {
+if ("what to disable drag") {
   disableDrag();
 }
 ```
@@ -39,7 +39,7 @@ if ('what to disable drag') {
 Or
 
 ```ts
-import enableDrag from 'easy-drag';
+import enableDrag from "easy-drag";
 const disableDrag = enableDrag(document.querySelector(".draggable"), {
   outerElement: document.body,
   innerElement: document.querySelector(".drag-icon"),
@@ -47,7 +47,7 @@ const disableDrag = enableDrag(document.querySelector(".draggable"), {
   onDrag: () => {},
   onDragEnd: () => {},
 });
-if ('what to disable drag') {
+if ("what to disable drag") {
   disableDrag();
 }
 ```
@@ -56,9 +56,35 @@ Description:
 
 - outerElement: drag range element, default document.body
 - innerElement: drag icon element, application scenario: Pop-ups need to be draggable, but only the title area can be dragged
-- onDragStart: start callback
-- onDrag: start callback
-- onDragEnd: end callback
+- onDragStart: callback on drag start
+- onDrag: callback in dragging
+- onDragEnd: callback on drag end
+
+### 接口声明
+
+```ts
+import { TVector } from "./utils";
+interface IOptions {
+  /** element that control drag range */
+  outerElement?: HTMLElement;
+  /** element that to drag */
+  innerElement?: HTMLElement;
+  /** callback on drag start */
+  onDragStart?: () => void;
+  /** callback in dragging */
+  onDrag?: (v: TVector) => void;
+  /** callback on drag end */
+  onDragEnd?: () => void;
+}
+/**
+ * use transform easy to realize drag effect
+ */
+declare const enableDrag: (
+  element: HTMLElement,
+  options?: IOptions | undefined
+) => () => void;
+export default enableDrag;
+```
 
 ## License
 

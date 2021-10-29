@@ -60,7 +60,7 @@ Description:
 - onDrag: callback in dragging, parameter v is element drag translate vector (relative to initial position)
 - onDragEnd: callback on drag end, parameter v is element drag translate vector (relative to initial position)
 
-### 接口声明
+### Interface
 
 ```ts
 import { TVector } from "./utils";

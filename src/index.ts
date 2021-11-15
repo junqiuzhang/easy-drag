@@ -42,11 +42,14 @@ const enableDrag = (element: HTMLElement, options?: IOptions) => {
   element = element;
   // 拖拽图标元素
   innerElement = innerElement ?? element;
-
+  // 能否支持触摸 
+  let canTouch: boolean = "ontouchstart" in window;
+  
   const onMouseDown = (e: MouseEvent) => {
     e.stopPropagation();
+    const target=canTouch?e.targetTouches[0]:e;
     // 记录当前鼠标位置
-    startPosition = [e.pageX, e.pageY];
+    startPosition = [target.pageX,target.pageY];
 
     if (outerElement && element && innerElement) {
       // 记录拖拽位移向量范围
@@ -63,8 +66,9 @@ const enableDrag = (element: HTMLElement, options?: IOptions) => {
   };
   const onMouseMove = (e: MouseEvent) => {
     if (startPosition && draggingMoveVectorRange) {
+      const target=canTouch?e.targetTouches[0]:e;
       // 当前鼠标位置
-      endPosition = [e.pageX, e.pageY];
+      endPosition = [target.pageX, target.pageY];
       // 本次的拖拽位移向量
       const currentMoveVector = formatVector(
         diffVector(startPosition, endPosition),
@@ -88,16 +92,29 @@ const enableDrag = (element: HTMLElement, options?: IOptions) => {
   };
   const addEventListener = () => {
     if (innerElement) {
-      innerElement.addEventListener("mousedown", onMouseDown);
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseup", onMouseUp);
+      if (canTouch) {
+        innerElement.addEventListener("touchstart", onMouseDown);
+        document.addEventListener("touchmove", onMouseMove);
+        document.addEventListener("touchend", onMouseUp);
+      }else{
+        innerElement.addEventListener("mousedown", onMouseDown);
+        document.addEventListener("mousemove", onMouseMove);
+        document.addEventListener("mouseup", onMouseUp);
+      }
+
     }
   };
   const removeEventListener = () => {
     if (innerElement) {
-      innerElement.removeEventListener("mousedown", onMouseDown);
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseup", onMouseUp);
+      if (canTouch) {
+        innerElement.removeEventListener("touchstart", onMouseDown);
+        document.removeEventListener("touchmove", onMouseMove);
+        document.removeEventListener("touchend", onMouseUp);
+      }else{
+        innerElement.removeEventListener("mousedown", onMouseDown);
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
+      }
     }
   };
   addEventListener();

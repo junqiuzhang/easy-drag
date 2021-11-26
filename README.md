@@ -14,6 +14,7 @@ Listen to `mousedown`, `mousemove`, and `mouseup` events, and set the element's 
 2. Use `transform` property implementation that supports elements in any positioning mode
 3. Lightweight, only 2KB
 4. Performance, hardware acceleration for a silky drag experience
+5. Supports PC and mobile terminals
 
 ## Install
 

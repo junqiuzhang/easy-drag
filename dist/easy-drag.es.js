@@ -20,6 +20,14 @@ const formatVector = (vector, range) => {
 const setTranslatePosition = (transform, vector) => {
   return `translate3d(${vector[0]}px, ${vector[1]}px, 0px) ${transform.replace("none", "")}`;
 };
+const getPosition = (e) => {
+  if (e instanceof MouseEvent) {
+    return [e.pageX, e.pageY];
+  }
+  const touch = e.touches[0];
+  return [touch.pageX, touch.pageY];
+};
+const isMobile = () => /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i.test(navigator.userAgent);
 const enableDrag = (element, options) => {
   let { outerElement, innerElement, onDragStart, onDrag, onDragEnd } = options != null ? options : {};
   let startTransform = window.getComputedStyle(element).transform;
@@ -33,7 +41,7 @@ const enableDrag = (element, options) => {
   innerElement = innerElement != null ? innerElement : element;
   const onMouseDown = (e) => {
     e.stopPropagation();
-    startPosition = [e.pageX, e.pageY];
+    startPosition = getPosition(e);
     if (outerElement && element && innerElement) {
       const outerElementRect = outerElement.getBoundingClientRect();
       const elementRect = element.getBoundingClientRect();
@@ -48,7 +56,7 @@ const enableDrag = (element, options) => {
   };
   const onMouseMove = (e) => {
     if (startPosition && draggingMoveVectorRange) {
-      endPosition = [e.pageX, e.pageY];
+      endPosition = getPosition(e);
       const currentMoveVector = formatVector(diffVector(startPosition, endPosition), draggingMoveVectorRange);
       draggingMoveVector = addVector(draggedMoveVector, currentMoveVector);
       element.style.transform = setTranslatePosition(startTransform, draggingMoveVector);
@@ -64,6 +72,12 @@ const enableDrag = (element, options) => {
   };
   const addEventListener = () => {
     if (innerElement) {
+      if (isMobile()) {
+        innerElement.addEventListener("touchstart", onMouseDown);
+        document.addEventListener("touchmove", onMouseMove);
+        document.addEventListener("touchend", onMouseUp);
+        return;
+      }
       innerElement.addEventListener("mousedown", onMouseDown);
       document.addEventListener("mousemove", onMouseMove);
       document.addEventListener("mouseup", onMouseUp);
@@ -71,6 +85,12 @@ const enableDrag = (element, options) => {
   };
   const removeEventListener = () => {
     if (innerElement) {
+      if (isMobile()) {
+        innerElement.removeEventListener("touchstart", onMouseDown);
+        document.removeEventListener("touchmove", onMouseMove);
+        document.removeEventListener("touchend", onMouseUp);
+        return;
+      }
       innerElement.removeEventListener("mousedown", onMouseDown);
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);

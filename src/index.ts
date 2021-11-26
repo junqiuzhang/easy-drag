@@ -5,6 +5,8 @@ import {
   diffVector,
   formatVector,
   setTranslatePosition,
+  getPosition,
+  isMobile,
 } from "./utils";
 interface IOptions {
   /** 拖拽范围元素 */
@@ -43,10 +45,10 @@ const enableDrag = (element: HTMLElement, options?: IOptions) => {
   // 拖拽图标元素
   innerElement = innerElement ?? element;
 
-  const onMouseDown = (e: MouseEvent) => {
+  const onMouseDown = (e: MouseEvent | TouchEvent) => {
     e.stopPropagation();
-    // 记录当前鼠标位置
-    startPosition = [e.pageX, e.pageY];
+    // 记录当前鼠标或触摸位置
+    startPosition = getPosition(e);
 
     if (outerElement && element && innerElement) {
       // 记录拖拽位移向量范围
@@ -61,10 +63,11 @@ const enableDrag = (element: HTMLElement, options?: IOptions) => {
     }
     typeof onDragStart === "function" && onDragStart(draggedMoveVector);
   };
-  const onMouseMove = (e: MouseEvent) => {
+  const onMouseMove = (e: MouseEvent | TouchEvent) => {
     if (startPosition && draggingMoveVectorRange) {
-      // 当前鼠标位置
-      endPosition = [e.pageX, e.pageY];
+      // 当前鼠标或触摸位置
+      endPosition = getPosition(e);
+
       // 本次的拖拽位移向量
       const currentMoveVector = formatVector(
         diffVector(startPosition, endPosition),
@@ -79,7 +82,7 @@ const enableDrag = (element: HTMLElement, options?: IOptions) => {
       typeof onDrag === "function" && onDrag(draggingMoveVector);
     }
   };
-  const onMouseUp = (e: MouseEvent) => {
+  const onMouseUp = (e: MouseEvent | TouchEvent) => {
     if (startPosition && draggingMoveVectorRange) {
       draggedMoveVector = draggingMoveVector;
       typeof onDragEnd === "function" && onDragEnd(draggedMoveVector);
@@ -88,6 +91,12 @@ const enableDrag = (element: HTMLElement, options?: IOptions) => {
   };
   const addEventListener = () => {
     if (innerElement) {
+      if (isMobile()) {
+        innerElement.addEventListener("touchstart", onMouseDown);
+        document.addEventListener("touchmove", onMouseMove);
+        document.addEventListener("touchend", onMouseUp);
+        return;
+      }
       innerElement.addEventListener("mousedown", onMouseDown);
       document.addEventListener("mousemove", onMouseMove);
       document.addEventListener("mouseup", onMouseUp);
@@ -95,6 +104,12 @@ const enableDrag = (element: HTMLElement, options?: IOptions) => {
   };
   const removeEventListener = () => {
     if (innerElement) {
+      if (isMobile()) {
+        innerElement.removeEventListener("touchstart", onMouseDown);
+        document.removeEventListener("touchmove", onMouseMove);
+        document.removeEventListener("touchend", onMouseUp);
+        return;
+      }
       innerElement.removeEventListener("mousedown", onMouseDown);
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);

@@ -58,3 +58,14 @@ export const setTranslatePosition = (
     ""
   )}`;
 };
+export const getPosition = (e: MouseEvent | TouchEvent): TVector => {
+  if (e instanceof MouseEvent) {
+    return [e.pageX, e.pageY];
+  }
+  const touch = e.touches[0];
+  return [touch.pageX, touch.pageY];
+};
+export const isMobile = () =>
+  /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i.test(
+    navigator.userAgent
+  );

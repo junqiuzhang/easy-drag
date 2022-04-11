@@ -43,3 +43,9 @@ yarn-error.log
 
 #static-site#
 static-site/
+
+# example
+example/
+
+# index
+index.html

@@ -1,6 +1,6 @@
 {
   "name": "easy-drag",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "easy drag",
   "files": [
     "dist"
@@ -18,7 +18,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite serve --port 8080"
   },
   "repository": {
     "type": "git",

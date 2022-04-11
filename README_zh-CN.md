@@ -30,7 +30,7 @@ npm install --save easy-drag
 ```ts
 import enableDrag from "easy-drag";
 const disableDrag = enableDrag(document.querySelector(".draggable"));
-if ("what to disable drag") {
+if ("want to disable drag") {
   disableDrag();
 }
 ```
@@ -46,7 +46,7 @@ const disableDrag = enableDrag(document.querySelector(".draggable"), {
   onDrag: (v) => {},
   onDragEnd: (v) => {},
 });
-if ("what to disable drag") {
+if ("want to disable drag") {
   disableDrag();
 }
 ```

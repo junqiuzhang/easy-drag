@@ -1,69 +1,88 @@
-const addVector = (vector1, vector2) => {
-  const x = vector1[0] + vector2[0];
-  const y = vector1[1] + vector2[1];
-  return [x, y];
-};
-const minusVector = (vector1, vector2) => {
-  const x = vector2[0] - vector1[0];
-  const y = vector2[1] - vector1[1];
-  return [x, y];
-};
-const formatVector = (vector, range) => {
-  let x = vector[0];
-  let y = vector[1];
-  x = Math.max(x, range[2]);
-  x = Math.min(x, range[3]);
-  y = Math.max(y, range[0]);
-  y = Math.min(y, range[1]);
-  return [x, y];
-};
-const setTranslatePosition = (transform, vector) => {
-  return `translate3d(${vector[0]}px, ${vector[1]}px, 0px) ${transform.replace("none", "")}`;
-};
-const getPosition = (e) => {
-  if (e instanceof MouseEvent) {
-    return [e.pageX, e.pageY];
-  }
-  const touch = e.touches[0];
-  return [touch.pageX, touch.pageY];
-};
-const isMobile = () => /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i.test(navigator.userAgent);
-const enableDrag = (element, options) => {
-  let { outerElement, innerElement, onDragStart, onDrag, onDragEnd } = options != null ? options : {};
+import {
+  TVector,
+  TVectorRange,
+  addVector,
+  minusVector,
+  formatVector,
+  setTranslatePosition,
+  getPosition,
+  isMobile,
+} from "./utils";
+interface IOptions {
+  /** 拖拽范围元素 */
+  outerElement?: HTMLElement;
+  /** 拖拽图标元素 */
+  innerElement?: HTMLElement;
+  /** 拖拽开始的回调 */
+  onDragStart?: (v: TVector) => void;
+  /** 拖拽中的回调 */
+  onDrag?: (v: TVector) => void;
+  /** 拖拽结束的回调 */
+  onDragEnd?: (v: TVector) => void;
+}
+/**
+ * 用transform属性轻松实现拖拽效果
+ */
+export const enableDrag = (element: HTMLElement, options?: IOptions) => {
+  let { outerElement, innerElement, onDragStart, onDrag, onDragEnd } =
+    options ?? {};
+  // 元素的transform属性值，getComputedStyle返回值为matrix3d形式
   let startTransform = window.getComputedStyle(element).transform;
-  let startPosition = null;
-  let endPosition = null;
-  let draggingMoveVectorRange = null;
-  let draggedMoveVector = [0, 0];
-  let draggingMoveVector = [0, 0];
-  outerElement = outerElement != null ? outerElement : document.body;
+  // 拖拽开始时的鼠标位置
+  let startPosition: TVector | null = null;
+  // 拖拽结束时的鼠标位置
+  let endPosition: TVector | null = null;
+  // 拖拽位移向量范围
+  let draggingMoveVectorRange: TVectorRange | null = null;
+  // 元素位移向量（拖拽后修改）
+  let draggedMoveVector: TVector = [0, 0];
+  // 元素位移向量（拖拽时修改）
+  let draggingMoveVector: TVector = [0, 0];
+  // 拖拽范围元素
+  outerElement = outerElement ?? document.body;
+  // 拖拽的元素
   element = element;
-  innerElement = innerElement != null ? innerElement : element;
-  const onMouseDown = (e) => {
+  // 拖拽图标元素
+  innerElement = innerElement ?? element;
+
+  const onMouseDown = (e: MouseEvent | TouchEvent) => {
     e.stopPropagation();
+    // 记录当前鼠标或触摸位置
     startPosition = getPosition(e);
+
     if (outerElement && element && innerElement) {
+      // 记录拖拽位移向量范围
       const outerElementRect = outerElement.getBoundingClientRect();
       const elementRect = element.getBoundingClientRect();
       draggingMoveVectorRange = [
         outerElementRect.top - elementRect.top,
         outerElementRect.bottom - elementRect.bottom,
         outerElementRect.left - elementRect.left,
-        outerElementRect.right - elementRect.right
+        outerElementRect.right - elementRect.right,
       ];
     }
     typeof onDragStart === "function" && onDragStart(draggedMoveVector);
   };
-  const onMouseMove = (e) => {
+  const onMouseMove = (e: MouseEvent | TouchEvent) => {
     if (startPosition && draggingMoveVectorRange) {
+      // 当前鼠标或触摸位置
       endPosition = getPosition(e);
-      const currentMoveVector = formatVector(minusVector(startPosition, endPosition), draggingMoveVectorRange);
+
+      // 本次的拖拽位移向量
+      const currentMoveVector = formatVector(
+        minusVector(startPosition, endPosition),
+        draggingMoveVectorRange
+      );
+      // 之前的拖拽位移向量+本次的拖拽位移向量
       draggingMoveVector = addVector(draggedMoveVector, currentMoveVector);
-      element.style.transform = setTranslatePosition(startTransform, draggingMoveVector);
+      element.style.transform = setTranslatePosition(
+        startTransform,
+        draggingMoveVector
+      );
       typeof onDrag === "function" && onDrag(draggingMoveVector);
     }
   };
-  const onMouseUp = (e) => {
+  const onMouseUp = (e: MouseEvent | TouchEvent) => {
     if (startPosition && draggingMoveVectorRange) {
       draggedMoveVector = draggingMoveVector;
       typeof onDragEnd === "function" && onDragEnd(draggedMoveVector);
@@ -99,4 +118,3 @@ const enableDrag = (element, options) => {
   addEventListener();
   return removeEventListener;
 };
-export { addVector, enableDrag as default, formatVector, getPosition, isMobile, minusVector, setTranslatePosition };

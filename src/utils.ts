@@ -23,7 +23,7 @@ export const addVector = (vector1: TVector, vector2: TVector): TVector => {
  * @param vector2 向量2
  * @returns 向量2 - 向量1
  */
-export const diffVector = (vector1: TVector, vector2: TVector): TVector => {
+export const minusVector = (vector1: TVector, vector2: TVector): TVector => {
   const x = vector2[0] - vector1[0];
   const y = vector2[1] - vector1[1];
   return [x, y];

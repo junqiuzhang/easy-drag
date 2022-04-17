@@ -1,7 +1,8 @@
 {
   "name": "easy-drag",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "easy drag",
+  "sideEffects": false,
   "files": [
     "dist"
   ],
@@ -14,7 +15,7 @@
     }
   },
   "type": "module",
-  "types": "./types/easy-drag.d.ts",
+  "types": "./types/index.d.ts",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
